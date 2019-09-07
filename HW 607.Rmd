@@ -1,0 +1,88 @@
+---
+title: "HW 2 Data 607"
+author: "Maryluz Cruz"
+date: "9/6/2019"
+output: html_document
+---
+
+Choose six recent popular movies. Ask at least five people that you know (friends, family, classmates,
+imaginary friends) to rate each of these movie that they have seen on a scale of 1 to 5. Take the results
+(observations) and store them in a SQL database. Load the information into an R data frame.
+
+For this assignment you first have to collect the data and then input it into the SQL database. I used imaginary friends data for this assignment since it was allowable. 
+
+Next is to find a way to export to the data. There are many ways to export the data. I chose to export the data and converting it into a .csv file, which then converts it into a .txt file that can be then uploaded into github repository to make it into a URL link. The data is read with the read.csv command. (One thing that I noticed while trying to export the data, if the Title of the columns does not have "" it doesn't recognize all of the columns in the table) 
+
+The SQL code that was used to collect the data from the table was in MYSQL:
+
+SELECT * FROM movie_ratings.ratings;
+
+Using SELECT * selects all of the data that is in the table. 
+
+
+
+```{r}
+movie_ratings <-   read.csv("https://raw.githubusercontent.com/Luz917/moviesrated/master/movratings.txt", stringsAsFactors = FALSE)
+str(movie_ratings)
+```
+
+```{r}
+dim(movie_ratings)
+```
+
+
+```{r}
+movie_ratings
+```
+
+```{r}
+colnames(movie_ratings) <- c("ID","Name", "Hobbs_and_Shaw","Lion_King", "Good_Boys","Spiderman_Far_From_Home", "Dora_the_Explorer","Angry_Birds_2" )
+movie_ratings
+```
+
+I chose to create the table this way because it would be easier to find information for each movie this way like if you wanted to find the mean for Lion King:
+
+```{r}
+mean(movie_ratings$Lion_King)
+```
+
+Summary of the Data 
+
+```{r}
+summary(movie_ratings)
+```
+
+Replace some values with NA to make the data more realistic to show that not everyone watches the same movies. I decided to make the 1's and 2's to be NA.
+
+(df[df == 0] <- NA)
+
+```{r}
+movie_ratings[movie_ratings==1]<-NA
+movie_ratings[movie_ratings==2]<-NA
+movie_ratings
+```
+
+
+```{r}
+summary(movie_ratings)
+```
+
+Subset of Data
+
+Only including even rows, and only 3 movie columns
+```{r}
+mov_ratings <- movie_ratings[c(2,4,6,8,10),c(1,2,4,6,7)]
+mov_ratings
+```
+
+```{r}
+dim(mov_ratings)
+```
+
+```{r}
+summary(mov_ratings)
+```
+
+
+In conclusion, not sure if this is the best method of exporting the MySQL database into R Studio but it exports the data and it gets read into R Studio and you are still able to manipulate the data and create a subset in R Studio. And the other thing is that not much sql is used in order to do this method. 
+
